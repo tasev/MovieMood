@@ -1,8 +1,9 @@
 package com.two.coders.moviemood.domain.model
 
 data class Movie(
-    val id: Int,
-    val title: String,
-    val posterPath: String,
-    val isFavorite: Boolean = false
+    var id: Int? = -1,
+    var name: String? = "",
+    var email: String? = "",
+    var posterPath: String? = "",
+    var overview: String? = ""
 )

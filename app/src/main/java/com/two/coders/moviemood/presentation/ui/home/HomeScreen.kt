@@ -9,6 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.two.coders.moviemood.R
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
@@ -19,7 +21,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            "Number of movies loaded, ${state.movies.size}!",
+            if (state.isLoading) stringResource(R.string.loading_label) else if (state.error != null) state.error.toString() else "Number of movies loaded, ${state.movies.size}!",
             style = MaterialTheme.typography.headlineMedium
         )
     }
