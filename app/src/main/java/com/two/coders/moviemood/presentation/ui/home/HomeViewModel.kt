@@ -18,22 +18,51 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeUiState())
     val state: StateFlow<HomeUiState> = _state
 
+    private var currentPage = 1
+    private var isLastPage = false
+    private var isLoadingMore = false
+
     init {
         fetchMovies()
     }
 
-    private fun fetchMovies() {
+    fun fetchMovies() {
+        if (isLoadingMore || isLastPage) return
+        isLoadingMore = true
+
         viewModelScope.launch {
-            _state.value = state.value.copy(movies = arrayListOf(), isLoading = true)
-            when (val result = getMoviesUseCase.invoke()) {
-                is Result.Success -> _state.value =
-                    state.value.copy(movies = result.data, isLoading = false)
-
-                is Result.Error -> _state.value =
-                    state.value.copy(isLoading = false, error = result.message)
-
-                else -> Unit
+            if (currentPage == 1) {
+                _state.value = _state.value.copy(movies = arrayListOf(), isLoading = true)
             }
+
+            when (val result = getMoviesUseCase.invoke(currentPage)) {
+                is Result.Success -> {
+                    val newMovies = result.data
+                    val updatedMovies = ArrayList(_state.value.movies).apply {
+                        addAll(newMovies)
+                    }
+
+                    _state.value = _state.value.copy(
+                        movies = updatedMovies,
+                        isLoading = false,
+                        error = null
+                    )
+
+                    currentPage++
+                    if (newMovies.isEmpty()) isLastPage = true
+                }
+
+                is Result.Error -> _state.value = _state.value.copy(
+                    isLoading = false,
+                    error = result.message
+                )
+
+                Result.Loading -> {
+                    // Loading state is already handled in the fetchMovies method
+                }
+            }
+
+            isLoadingMore = false
         }
     }
 }

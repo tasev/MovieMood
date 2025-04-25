@@ -13,6 +13,7 @@ interface MoviesApi {
    suspend fun getMovies(
         @Path("media_type") mediaType: String = "movie",
         @Path("time_window") timeWindow: String = "week",
-        @Query("api_key") authHeader: String = "ded5e14622d8004a564b41c4e2beaef4"
+        @Query("api_key") authHeader: String = "ded5e14622d8004a564b41c4e2beaef4",
+        @Query("page") currentPage: Int = 1,
     ): MovieListResponse
 }

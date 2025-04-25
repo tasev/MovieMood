@@ -5,5 +5,5 @@ import com.two.coders.moviemood.domain.repository.MoviesRepository
 import com.two.coders.moviemood.utils.Result
 
 class GetMoviesUseCase(private val repository: MoviesRepository) {
-    suspend fun invoke(): Result<ArrayList<Movie>> = repository.getMovies()
+    suspend fun invoke(currentPage: Int): Result<ArrayList<Movie>> = repository.getMovies(currentPage)
 }

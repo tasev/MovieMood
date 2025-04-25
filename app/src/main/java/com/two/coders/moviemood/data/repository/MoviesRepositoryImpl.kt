@@ -12,9 +12,9 @@ class MoviesRepositoryImpl @Inject constructor(
     private val api: MoviesApi
 ) : MoviesRepository {
 
-    override suspend fun getMovies(): Result<ArrayList<Movie>> {
+    override suspend fun getMovies(currentPage: Int): Result<ArrayList<Movie>> {
         return try {
-            val response = api.getMovies()
+            val response = api.getMovies(currentPage = currentPage)
             val movies = ArrayList(response.results.map { it.toDomain() })
             Result.Success(movies)
         } catch (e: HttpException) {
