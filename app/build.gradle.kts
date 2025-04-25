@@ -56,6 +56,9 @@ dependencies {
     implementation(libs.hiltNavigationCompose)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.logging.interceptor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -6,7 +6,7 @@ import com.two.coders.moviemood.domain.model.Movie
 data class MovieResponse(
     @SerializedName("id")
     var id: Int? = -1,
-    @SerializedName("name")
+    @SerializedName("title")
     var name: String? = "",
     var email: String? = "",
     @SerializedName("poster_path")
@@ -15,6 +15,8 @@ data class MovieResponse(
     var overview: String? = ""
 
 ) {
+    val basePosterUrl = "https://image.tmdb.org/t/p/w500"
+
     fun toDomain() =
-        Movie(id = id, name = name, email = email, posterPath = posterPath, overview = overview)
+        Movie(id = id, name = name, email = email, posterPath = "${basePosterUrl}${this.posterPath}", overview = overview)
 }
