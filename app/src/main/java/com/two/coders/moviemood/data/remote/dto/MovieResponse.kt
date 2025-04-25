@@ -5,7 +5,7 @@ import com.two.coders.moviemood.domain.model.Movie
 
 data class MovieResponse(
     @SerializedName("id")
-    var id: Int? = -1,
+    var id: Int = -1,
     @SerializedName("title")
     var name: String? = "",
     var email: String? = "",

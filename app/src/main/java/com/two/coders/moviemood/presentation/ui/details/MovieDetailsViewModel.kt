@@ -1,0 +1,49 @@
+package com.two.coders.moviemood.presentation.ui.details
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.two.coders.moviemood.domain.usecase.GetMovieDetailsUseCase
+import com.two.coders.moviemood.utils.AppResult
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class MovieDetailsViewModel @Inject constructor(
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(MovieDetailsUiState())
+    val state: StateFlow<MovieDetailsUiState> = _state
+
+
+    fun fetchMovieDetail(movieId: Int) {
+
+        viewModelScope.launch {
+            _state.value = _state.value.copy(movie = null, isLoading = true)
+
+            when (val result = getMovieDetailsUseCase.invoke(movieId = movieId)) {
+                is AppResult.Success -> {
+
+                    _state.value = _state.value.copy(
+                        movie = result.data,
+                        isLoading = false,
+                        error = null
+                    )
+
+                }
+
+                is AppResult.Error -> _state.value = _state.value.copy(
+                    isLoading = false,
+                    error = result.message
+                )
+
+                AppResult.Loading -> {
+                    // Loading state is already handled in the fetchMovies method
+                }
+            }
+        }
+    }
+}

@@ -4,6 +4,6 @@ import com.two.coders.moviemood.domain.model.Movie
 import com.two.coders.moviemood.domain.repository.MoviesRepository
 import com.two.coders.moviemood.utils.AppResult
 
-class GetMoviesUseCase(private val repository: MoviesRepository) {
-    suspend fun invoke(currentPage: Int): AppResult<ArrayList<Movie>> = repository.getMovies(currentPage)
+class SearchMoviesUseCase(private val repository: MoviesRepository) {
+    suspend fun invoke(query: String): AppResult<ArrayList<Movie>> = repository.searchMovies(query)
 }

@@ -3,7 +3,7 @@ package com.two.coders.moviemood.presentation.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.two.coders.moviemood.domain.usecase.GetMoviesUseCase
-import com.two.coders.moviemood.utils.Result
+import com.two.coders.moviemood.utils.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
             }
 
             when (val result = getMoviesUseCase.invoke(currentPage)) {
-                is Result.Success -> {
+                is AppResult.Success -> {
                     val newMovies = result.data
                     val updatedMovies = ArrayList(_state.value.movies).apply {
                         addAll(newMovies)
@@ -52,12 +52,12 @@ class HomeViewModel @Inject constructor(
                     if (newMovies.isEmpty()) isLastPage = true
                 }
 
-                is Result.Error -> _state.value = _state.value.copy(
+                is AppResult.Error -> _state.value = _state.value.copy(
                     isLoading = false,
                     error = result.message
                 )
 
-                Result.Loading -> {
+                AppResult.Loading -> {
                     // Loading state is already handled in the fetchMovies method
                 }
             }

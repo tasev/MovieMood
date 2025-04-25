@@ -25,12 +25,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 
 @Composable
-fun MovieItem(movie: Movie) {
+fun MovieItem(movie: Movie, onClick: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.Top
     ) {
@@ -75,5 +76,5 @@ fun MovieItem(movie: Movie) {
 @Preview
 @Composable
 fun MovieItemPreview() {
-    MovieItem(Movie(name = "Movie 1", posterPath = "https://example.com/poster.jpg"))
+    MovieItem(Movie(name = "Movie 1", posterPath = "https://example.com/poster.jpg"), {})
 }
