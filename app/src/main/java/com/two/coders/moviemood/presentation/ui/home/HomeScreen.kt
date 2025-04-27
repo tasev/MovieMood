@@ -22,27 +22,40 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.two.coders.moviemood.presentation.ui.components.MovieItem
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onMovieClick: (Int) -> Unit, onSearchClick: () -> Unit) {
     val state by viewModel.state.collectAsState()
+    HomeScreenUI(
+        state = state,
+        onMovieClick = onMovieClick,
+        onSearchClick = onSearchClick,
+        fetchMoviesClick = { viewModel.fetchMovies() })
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreenUI(
+    state: HomeUiState,
+    onMovieClick: (Int) -> Unit,
+    onSearchClick: () -> Unit,
+    fetchMoviesClick: () -> Unit
+) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Movie Mood") },
-                actions = {
-                    IconButton(onClick = onSearchClick) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
-                    }
+            TopAppBar(title = { Text("Movie Mood") }, actions = {
+                IconButton(onClick = onSearchClick) {
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
                 }
-            )
-        }
-    ) { padding ->
+            })
+        }) { padding ->
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = padding.calculateTopPadding()),
             contentAlignment = Alignment.Center
         ) {
             when {
@@ -68,7 +81,7 @@ fun HomeScreen(viewModel: HomeViewModel, onMovieClick: (Int) -> Unit, onSearchCl
                             if (index >= state.movies.lastIndex - 5) {
                                 // Trigger load more near the end
                                 LaunchedEffect(Unit) {
-                                    viewModel.fetchMovies()
+                                    fetchMoviesClick.invoke()
                                 }
                             }
                         }
@@ -90,4 +103,19 @@ fun HomeScreen(viewModel: HomeViewModel, onMovieClick: (Int) -> Unit, onSearchCl
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    HomeScreenUI(
+        state = HomeUiState(
+            isLoading = false,
+            movies = arrayListOf(),
+            error = null
+        ),
+        onMovieClick = {},
+        onSearchClick = {},
+        fetchMoviesClick = {}
+    )
 }

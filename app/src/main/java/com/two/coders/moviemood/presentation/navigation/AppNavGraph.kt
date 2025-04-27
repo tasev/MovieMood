@@ -40,7 +40,8 @@ fun AppNavGraph(
                 viewModel = searchViewModel,
                 onMovieClick = { movieId ->
                     navController.navigate("movieDetails/$movieId")
-                }
+                },
+                onBackClick = { navController.popBackStack() }
             )
         }
 
@@ -49,7 +50,10 @@ fun AppNavGraph(
             arguments = listOf(navArgument("movieId") { type = NavType.IntType })
         ) { backStackEntry ->
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: -1
-            MovieDetailsScreen(viewModel = movieDetailsViewModel, movieId = movieId)
+            MovieDetailsScreen(
+                viewModel = movieDetailsViewModel,
+                movieId = movieId,
+                onBackClick = { navController.popBackStack() })
         }
     }
 }
