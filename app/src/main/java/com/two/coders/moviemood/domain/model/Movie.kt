@@ -5,5 +5,6 @@ data class Movie(
     var name: String? = "",
     var email: String? = "",
     var posterPath: String? = "",
-    var overview: String? = ""
+    var overview: String? = "",
+    var genres: List<Genre> = emptyList()
 )

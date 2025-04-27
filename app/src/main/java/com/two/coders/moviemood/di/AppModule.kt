@@ -4,6 +4,7 @@ import com.two.coders.moviemood.data.remote.api.MoviesApi
 import com.two.coders.moviemood.data.repository.MoviesRepositoryImpl
 import com.two.coders.moviemood.domain.repository.MoviesRepository
 import com.two.coders.moviemood.domain.usecase.GetMovieDetailsUseCase
+import com.two.coders.moviemood.domain.usecase.GetMovieReviewsUseCase
 import com.two.coders.moviemood.domain.usecase.GetMoviesUseCase
 import com.two.coders.moviemood.domain.usecase.SearchMoviesUseCase
 import dagger.Module
@@ -54,5 +55,9 @@ object AppModule {
     @Provides
     fun provideSearchMovieDetailsUseCase(repository: MoviesRepository): SearchMoviesUseCase =
         SearchMoviesUseCase(repository)
+
+    @Provides
+    fun provideMovieReviewsUseCase(repository: MoviesRepository): GetMovieReviewsUseCase =
+        GetMovieReviewsUseCase(repository)
 
 }

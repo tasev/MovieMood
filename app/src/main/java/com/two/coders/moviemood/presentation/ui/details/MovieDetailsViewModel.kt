@@ -3,8 +3,10 @@ package com.two.coders.moviemood.presentation.ui.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.two.coders.moviemood.domain.usecase.GetMovieDetailsUseCase
+import com.two.coders.moviemood.domain.usecase.GetMovieReviewsUseCase
 import com.two.coders.moviemood.utils.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getMovieReviewsUseCase: GetMovieReviewsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MovieDetailsUiState())
@@ -20,28 +23,39 @@ class MovieDetailsViewModel @Inject constructor(
 
 
     fun fetchMovieDetail(movieId: Int) {
-
         viewModelScope.launch {
             _state.value = _state.value.copy(movie = null, isLoading = true)
 
-            when (val result = getMovieDetailsUseCase.invoke(movieId = movieId)) {
-                is AppResult.Success -> {
+            val detailsDeferred = async { getMovieDetailsUseCase.invoke(movieId) }
+            val reviewsDeferred = async { getMovieReviewsUseCase.invoke(movieId) }
 
-                    _state.value = _state.value.copy(
-                        movie = result.data,
-                        isLoading = false,
-                        error = null
-                    )
-
-                }
+            when (val result = detailsDeferred.await()) {
+                is AppResult.Success -> _state.value = _state.value.copy(
+                    movie = result.data,
+                    isLoading = false,
+                    error = null
+                )
 
                 is AppResult.Error -> _state.value = _state.value.copy(
                     isLoading = false,
                     error = result.message
                 )
 
-                AppResult.Loading -> {
-                    // Loading state is already handled in the fetchMovies method
+                AppResult.Loading -> { /* Already handled */
+                }
+            }
+
+            when (val result = reviewsDeferred.await()) {
+                is AppResult.Success -> {
+                    _state.value = _state.value.copy(
+                        movieReviews = result.data
+                    )
+                }
+
+                is AppResult.Error -> { /* Ignore review errors */
+                }
+
+                AppResult.Loading -> { /* Already handled */
                 }
             }
         }

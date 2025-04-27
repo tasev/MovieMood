@@ -2,6 +2,7 @@ package com.two.coders.moviemood.data.remote.api
 
 import com.tta.thisweektvshows.api.codables.MovieListResponse
 import com.two.coders.moviemood.data.remote.dto.MovieResponse
+import com.two.coders.moviemood.data.remote.dto.MovieReviewsListResponse
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
@@ -24,6 +25,13 @@ interface MoviesApi {
         @Path("movie_id") movieId: Int = -1,
         @Query("api_key") authHeader: String = "ded5e14622d8004a564b41c4e2beaef4",
     ): MovieResponse
+
+    @Headers("Accept: application/json")
+    @GET("movie/{movie_id}/reviews")
+    suspend fun getMovieReviews(
+        @Path("movie_id") movieId: Int = -1,
+        @Query("api_key") authHeader: String = "ded5e14622d8004a564b41c4e2beaef4",
+    ): MovieReviewsListResponse
 
     @Headers("Accept: application/json")
     @GET("search/movie")
