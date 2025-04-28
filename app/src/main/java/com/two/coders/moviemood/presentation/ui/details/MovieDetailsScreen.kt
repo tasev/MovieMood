@@ -42,6 +42,13 @@ import com.two.coders.moviemood.R
 import com.two.coders.moviemood.presentation.ui.components.MovieReviewItem
 import com.two.coders.moviemood.utils.SharedPref
 
+/**
+ * Composable function for the Movie Details screen.
+ * Displays the details and reviews of a specific movie.
+ * @param viewModel The ViewModel managing the state of the Movie Details screen.
+ * @param movieId The ID of the movie to display details for.
+ * @param onBackClick Callback invoked when the back button is clicked.
+ */
 @Composable
 fun MovieDetailsScreen(viewModel: MovieDetailsViewModel, movieId: Int, onBackClick: () -> Unit) {
 
@@ -55,6 +62,15 @@ fun MovieDetailsScreen(viewModel: MovieDetailsViewModel, movieId: Int, onBackCli
     MovieDetailsScreenUI(state, movieId, myFavouriteMovies, onBackClick)
 }
 
+/**
+ * UI for the Movie Details screen.
+ * Displays a header image, genres, title, description, and reviews of the movie.
+ * Allows marking the movie as a favorite.
+ * @param state The UI state of the Movie Details screen.
+ * @param movieId The ID of the movie being displayed.
+ * @param myFavouriteMovies A set of favorite movie IDs.
+ * @param onBackClick Callback invoked when the back button is clicked.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreenUI(

@@ -14,15 +14,24 @@ import com.two.coders.moviemood.presentation.ui.home.HomeViewModel
 import com.two.coders.moviemood.presentation.ui.search.SearchScreen
 import com.two.coders.moviemood.presentation.ui.search.SearchViewModel
 
+/**
+ * Defines the navigation graph for the application using Jetpack Compose Navigation.
+ * @param navController The NavHostController used to manage navigation between screens.
+ */
 @Composable
 fun AppNavGraph(
     navController: NavHostController
 ) {
+    // ViewModels for each screen are provided by Hilt
     val homeViewModel: HomeViewModel = hiltViewModel()
     val searchViewModel: SearchViewModel = hiltViewModel()
     val movieDetailsViewModel: MovieDetailsViewModel = hiltViewModel()
 
-    NavHost(navController, startDestination = "home") {
+    NavHost(
+        navController = navController,
+        startDestination = "home" // Initial screen
+    ) {
+        // Home screen route
         composable("home") {
             HomeScreen(
                 viewModel = homeViewModel,
@@ -35,6 +44,7 @@ fun AppNavGraph(
             )
         }
 
+        // Search screen route
         composable("search") {
             SearchScreen(
                 viewModel = searchViewModel,
@@ -45,6 +55,7 @@ fun AppNavGraph(
             )
         }
 
+        // Movie details screen route
         composable(
             route = "movieDetails/{movieId}",
             arguments = listOf(navArgument("movieId") { type = NavType.IntType })
@@ -53,7 +64,8 @@ fun AppNavGraph(
             MovieDetailsScreen(
                 viewModel = movieDetailsViewModel,
                 movieId = movieId,
-                onBackClick = { navController.popBackStack() })
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }

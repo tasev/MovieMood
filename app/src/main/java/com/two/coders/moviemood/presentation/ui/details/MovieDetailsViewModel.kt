@@ -14,6 +14,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Movie Details screen.
+ * Manages the state of movie details and reviews, and handles fetching them from the repository.
+ * @param getMovieDetailsUseCase The use case for fetching movie details.
+ * @param getMovieReviewsUseCase The use case for fetching movie reviews.
+ * @param dispatcher The coroutine dispatcher for background operations.
+ */
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
@@ -24,6 +31,11 @@ class MovieDetailsViewModel @Inject constructor(
     private val _state = MutableStateFlow(MovieDetailsUiState())
     val state: StateFlow<MovieDetailsUiState> = _state
 
+    /**
+     * Fetches the details and reviews of a movie by its ID.
+     * Updates the state with the results or errors.
+     * @param movieId The ID of the movie to fetch details for.
+     */
     fun fetchMovieDetail(movieId: Int) {
         viewModelScope.launch(dispatcher) {
             _state.value = _state.value.copy(movie = null, isLoading = true)

@@ -26,6 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.two.coders.moviemood.presentation.ui.components.MovieItem
 
+/**
+ * Composable function for the Home screen.
+ * Displays a list of movies and handles user interactions like clicking on a movie or navigating to the search screen.
+ * @param viewModel The ViewModel managing the state of the Home screen.
+ * @param onMovieClick Callback invoked when a movie is clicked, passing the movie ID.
+ * @param onSearchClick Callback invoked when the search icon is clicked.
+ */
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onMovieClick: (Int) -> Unit, onSearchClick: () -> Unit) {
     val state by viewModel.state.collectAsState()
@@ -36,6 +43,14 @@ fun HomeScreen(viewModel: HomeViewModel, onMovieClick: (Int) -> Unit, onSearchCl
         fetchMoviesClick = { viewModel.fetchMovies() })
 }
 
+/**
+ * UI for the Home screen.
+ * Displays a top bar, a loading indicator, an error message, or a list of movies based on the current state.
+ * @param state The UI state of the Home screen.
+ * @param onMovieClick Callback invoked when a movie is clicked.
+ * @param onSearchClick Callback invoked when the search icon is clicked.
+ * @param fetchMoviesClick Callback invoked to fetch more movies when scrolling near the end of the list.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenUI(

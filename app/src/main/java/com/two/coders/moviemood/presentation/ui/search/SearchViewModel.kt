@@ -15,6 +15,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Search screen.
+ * Manages the state of the search query and results, and handles searching for movies.
+ * @param searchMoviesUseCase The use case for searching movies.
+ */
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -29,8 +34,8 @@ class SearchViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             searchQuery
-                .debounce(400L)
-                .distinctUntilChanged()
+                .debounce(400L) // Waits for 400ms of inactivity before processing the query
+                .distinctUntilChanged() // Ignores duplicate queries
                 .collectLatest { query ->
                     if (query.length > 2) {
                         performSearch(query)
@@ -41,11 +46,19 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Updates the search query and triggers the search process.
+     * @param newQuery The new search query string.
+     */
     fun updateQuery(newQuery: String) {
         _state.value = _state.value.copy(query = newQuery)
         searchQuery.value = newQuery
     }
 
+    /**
+     * Performs the search operation and updates the state with the results.
+     * @param query The search query string.
+     */
     private suspend fun performSearch(query: String) {
         _state.value = _state.value.copy(isLoading = true)
         when (val result = searchMoviesUseCase.invoke(query)) {

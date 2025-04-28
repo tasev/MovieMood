@@ -26,6 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.two.coders.moviemood.presentation.ui.components.MovieItem
 
+/**
+ * Composable function for the Search screen.
+ * Displays a search bar and a list of movies based on the search query.
+ * @param viewModel The ViewModel managing the state of the Search screen.
+ * @param onMovieClick Callback invoked when a movie is clicked, passing the movie ID.
+ * @param onBackClick Callback invoked when the back button is clicked.
+ */
 @Composable
 fun SearchScreen(viewModel: SearchViewModel, onMovieClick: (Int) -> Unit, onBackClick: () -> Unit) {
     val state by viewModel.state.collectAsState()
@@ -37,6 +44,14 @@ fun SearchScreen(viewModel: SearchViewModel, onMovieClick: (Int) -> Unit, onBack
     )
 }
 
+/**
+ * Composable function for the Search screen.
+ * Displays a search bar and a list of movies based on the search query.
+ * @param state The SearchUiState managing the state of the Search screen.
+ * @param onMovieClick Callback invoked when a movie is clicked, passing the movie ID.
+ * @param onBackClick Callback invoked when the back button is clicked.
+ * @param updateQuery Callback invoked when the search query is changed.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreenUI(

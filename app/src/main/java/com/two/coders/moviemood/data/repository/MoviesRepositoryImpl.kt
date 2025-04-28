@@ -13,10 +13,11 @@ class MoviesRepositoryImpl @Inject constructor(
     private val api: MoviesApi
 ) : MoviesRepository {
 
+    // Fetches a list of movies for the given page
     override suspend fun getMovies(currentPage: Int): AppResult<ArrayList<Movie>> {
         return try {
             val response = api.getMovies(currentPage = currentPage)
-            val movies = ArrayList(response.results.map { it.toDomain() })
+            val movies = ArrayList(response.results.map { it.toDomain() }) // Maps DTOs to domain models
             AppResult.Success(movies)
         } catch (e: HttpException) {
             AppResult.Error("Network error: ${e.code()} ${e.message()}")
@@ -27,10 +28,11 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
+    // Fetches details of a specific movie by its ID
     override suspend fun getMovieDetails(movieId: Int): AppResult<Movie> {
         return try {
             val response = api.getMovieDetails(movieId = movieId)
-            AppResult.Success(response.toDomain())
+            AppResult.Success(response.toDomain()) // Converts DTO to domain model
         } catch (e: HttpException) {
             AppResult.Error("Network error: ${e.code()} ${e.message()}")
         } catch (_: IOException) {
@@ -40,6 +42,7 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
+    // Fetches reviews for a specific movie
     override suspend fun getMovieReviews(movieId: Int): AppResult<ArrayList<MovieReview>> {
         return try {
             val response = api.getMovieReviews(movieId = movieId)
@@ -53,6 +56,7 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
+    // Searches for movies based on a query string
     override suspend fun searchMovies(query: String): AppResult<ArrayList<Movie>> {
         return try {
             val response = api.searchMovies(query = query)

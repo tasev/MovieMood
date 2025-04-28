@@ -10,6 +10,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Home screen.
+ * Manages the state of the movie list and handles fetching movies from the repository.
+ * @param getMoviesUseCase The use case for fetching movies.
+ */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase
@@ -26,6 +31,10 @@ class HomeViewModel @Inject constructor(
         fetchMovies()
     }
 
+    /**
+     * Fetches movies for the current page and updates the state.
+     * Prevents multiple simultaneous fetches or fetching beyond the last page.
+     */
     fun fetchMovies() {
         if (isLoadingMore || isLastPage) return
         isLoadingMore = true

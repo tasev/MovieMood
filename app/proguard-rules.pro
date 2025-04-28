@@ -1,21 +1,18 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep all classes and their generic type information
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class * { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep all interfaces
+-keep interface * { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Prevent warnings for missing classes
+-dontwarn **
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Additional rules for libraries (already included in your file)
+-keep class com.google.gson.** { *; }
+-keep class retrofit2.** { *; }
+-keep class dagger.hilt.** { *; }
+-keep class kotlinx.coroutines.** { *; }
+-keep class okhttp3.logging.** { *; }
+-keep class coil.** { *; }
