@@ -2,10 +2,12 @@ package com.two.coders.moviemood.presentation.ui.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.two.coders.moviemood.di.IoDispatcher
 import com.two.coders.moviemood.domain.usecase.GetMovieDetailsUseCase
 import com.two.coders.moviemood.domain.usecase.GetMovieReviewsUseCase
 import com.two.coders.moviemood.utils.AppResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,15 +17,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
-    private val getMovieReviewsUseCase: GetMovieReviewsUseCase
+    private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MovieDetailsUiState())
     val state: StateFlow<MovieDetailsUiState> = _state
 
-
     fun fetchMovieDetail(movieId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _state.value = _state.value.copy(movie = null, isLoading = true)
 
             val detailsDeferred = async { getMovieDetailsUseCase.invoke(movieId) }

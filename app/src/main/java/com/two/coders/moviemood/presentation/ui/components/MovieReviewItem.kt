@@ -36,7 +36,6 @@ fun MovieReviewItem(movieReview: MovieReview) {
             .padding(16.dp),
         verticalAlignment = Alignment.Top
     ) {
-        Log.d("movieReview.authorDetails?.avatarPath",""+movieReview.authorDetails?.avatarPath)
         AsyncImage(
             model = movieReview.authorDetails?.avatarPath,
             contentDescription = "author avatar",
